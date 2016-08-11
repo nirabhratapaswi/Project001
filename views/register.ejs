@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <title>Login</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  </head>
+  <body>
+
+    <div id="navigation">
+    </div>
+    <div id="sidebar">
+    </div>
+    <div id="notice">
+      <p><%= notice %></p>
+    </div>
+    <div id="login" class="container">
+      <form role="form" action="./registration" method="post">
+        <div class="form-group">
+          <label for="username">:Roll Number</label>
+          <div class="col-sm-3">
+            <input type="text" class="form-control" id="Roll" name="Roll">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="pwd">:Password</label>
+          <div class="col-sm-3">
+            <input type="password" class="form-control" id="Password" name="Password">
+          </div>
+
+          <div class="form-group">
+            <label for="username">:Name</label>
+            <div class="col-sm-3">
+              <input type="text" class="form-control" id="Name" name="Name">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="username">:Email</label>
+            <div class="col-sm-3">
+              <input type="text" class="form-control" id="Email" name="Email">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="username">:Mobile</label>
+            <div class="col-sm-3">
+              <input type="text" class="form-control" id="Mobile" name="Mobile">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="username">:DOB</label>
+            <div class="col-sm-3">
+              <input type="text" class="form-control" id="DaOB" name="DaOB">
+            </div>
+          </div>
+
+          <div class="form-group">Auth
+            <label for="username">:Authority</label>
+            <div class="col-sm-3">
+              <input type="text" class="form-control" id="Auth" name="Auth">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="username">:Place</label>
+            <div class="col-sm-3">
+              <input type="text" class="form-control" id="Place" name="Place">
+            </div>
+          </div>
+
+
+        </div>
+        <div class="checkbox">
+          <label><input type="checkbox"> Remember me</label>
+        </div>
+        <button type="submit" class="btn btn-info">Submit</button>
+      </form>
+
+    </div>
+
+  </body>
+</html>
