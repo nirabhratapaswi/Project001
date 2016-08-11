@@ -1,11 +1,11 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET home page. */
+var user = [];
+
+/* GET login page. */
 router.get('/', function(req, res, next) {
-  if(req.session)
-    console.log("Session is sooooooooo much working!!!!!!!!!!!!!");
-  res.render('index');
+    res.render('login', { notice: "Login Page" } );
 });
 
 module.exports = router;

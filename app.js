@@ -9,6 +9,8 @@ var session = require('express-session');
 var routes = require('./routes/index');
 var login = require('./routes/login');
 var auth = require('./routes/auth');
+var logout = require('./routes/logout');
+var loginfirst = require('./routes/loginfirst');
 //var users = require('./routes/users');
 
 var app = express();
@@ -27,12 +29,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
   secret: '123450QWERTY',
   resave: true,
-  saveUninitialized: true
+  saveUninitialized: true,
+  state: '0'
 }));
 
 app.use('/', routes);
 app.use('/login', login);
 app.use('/auth', auth);
+app.use('/logout', logout);
+app.use('/loginfirst', loginfirst);
 //app.use('/users', users);
 
 // catch 404 and forward to error handler

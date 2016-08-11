@@ -7,7 +7,15 @@
 var app = require('../app');
 var debug = require('debug')('ChemWeb19Nitt:server');
 var http = require('http');
-
+var mysql = require('mysql');
+var connection = mysql.createConnection({
+  host      : 'localhost',
+  user      : 'root',
+  password  : 'capital1197',
+  database  : 'chemstudents'
+});
+app.locals.connection = connection;
+connection.connect();
 /**
  * Get port from environment and store in Express.
  */
