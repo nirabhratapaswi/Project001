@@ -4,8 +4,16 @@ var session = require('express-session');
 var bodyParser = require('body-parser');
 var redirect = require('express-redirect');
 var bcrypt = require('bcrypt');
-
 var mysql = require('mysql');
+var nodemailer = require('nodemailer');
+
+var transporter = nodemailer.createTransport({
+        service: 'Gmail',
+        auth: {
+            user: 'chemicalnitt19@gmail.com', // Your email id
+            pass: 'cnitt1519' // Your password
+        }
+});
 
 var user = [];
 
@@ -38,6 +46,30 @@ router.post('/', function(req, res, next) {
         if(err)
           throw err;
         console.log("Row added successfully!!");
+
+
+
+        var text = 'Hi ' + req.body.Name + ', this is the Official Chemcial Website Responding!';
+        var mailOptions = {
+          from: 'chemicalnitt19@gmail.com', // sender address
+          to: req.body.Email, // list of receivers
+          subject: 'Email Example', // Subject line
+          text: text
+        };
+        transporter.sendMail(mailOptions, function(error, info){
+          if(error){
+              console.log(error);
+              //res.json({yo: 'error'});
+          }else{
+              console.log('Message sent: ' + info.response);
+              //res.json({yo: info.response});
+          };
+      });
+
+
+
+
+
         res.render('success', { notice: "Success!!" } );
       });
     });

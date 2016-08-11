@@ -12,9 +12,12 @@ var auth = require('./routes/auth');
 var logout = require('./routes/logout');
 var loginfirst = require('./routes/loginfirst');
 var registration = require('./routes/registration');
+var mail = require('./routes/mail');
 //var users = require('./routes/users');
 
 var app = express();
+
+//mail config
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -40,6 +43,7 @@ app.use('/auth', auth);
 app.use('/logout', logout);
 app.use('/loginfirst', loginfirst);
 app.use('/registration', registration);
+app.use('/mail', mail);
 
 //app.use('/users', users);
 
@@ -76,3 +80,4 @@ app.use(function(err, req, res, next) {
 
 
 module.exports = app;
+//module.exports = transporter;

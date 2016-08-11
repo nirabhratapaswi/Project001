@@ -14,6 +14,8 @@ var user = [];
 var sess;
 
 router.post('/', function(req, res, next) {
+  var found = 0;
+  var notFound = 0;
   sess = req.session;
   var connection = req.app.locals.connection;
   connection.query('SELECT * FROM USERS;', function(err, rows, fields) {
@@ -26,6 +28,7 @@ router.post('/', function(req, res, next) {
         sess.username = rows[i].Name;
         bcrypt.compare(req.body.pwd, rows[i].Password, function(err, resp) {
         if(resp) {
+          found = 1;
           console.log("Password is correct!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
           sess.state = 1;
           //sess.username = rows[i].Name;
@@ -36,12 +39,9 @@ router.post('/', function(req, res, next) {
           res.render('login', { notice: "Incorrect username/password" } );
         });
       }
-      //else {
-        //res.render('login', { notice: "Incorrect username/password" } );
-      //}
     }
-    //if(sess.state != 1)
-      //res.render('login', { notice: "Incorrect username/password" } );
+    if(found == 20)
+      res.render('login', { notice: "Incorrect username/password" } );
   });
 });
 
