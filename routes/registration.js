@@ -51,7 +51,7 @@ router.post('/', function(req, res, next) {
 
         var text = 'Hi ' + req.body.Name + ', this is the Official Chemcial Website Responding!';
         var mailOptions = {
-          from: 'chemicalnitt19@gmail.com', // sender address
+          from: 'bluff@gmail.com', // sender address
           to: req.body.Email, // list of receivers
           subject: 'Email Example', // Subject line
           text: text
