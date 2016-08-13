@@ -51,7 +51,6 @@ router.post('/', function(req, res, next) {
             res.locals.user = user;
             found = 1;
             console.log("Login by " + user.Name + "...");
-            //res.render('auth', { username: req.session.user.Name } );
             res.redirect('/auth');
           }
           else
