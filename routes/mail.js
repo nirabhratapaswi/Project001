@@ -6,7 +6,7 @@ var transporter = nodemailer.createTransport({
         service: 'Gmail',
         auth: {
             user: 'chemicalnitt19@gmail.com', // Your email id
-            pass: 'cnitt1519' // Your password
+            pass: 'password' // Your password
         }
 });
 
@@ -15,7 +15,7 @@ router.get('/', function(req, res, next) {
   var text = 'Hello world from Nirabhra!';
   var mailOptions = {
     from: 'chemicalnitt19@gmail.com', // sender address
-    to: 'nirabhratapaswi112121de@gmail.com', // list of receivers
+    to: 'reciever@gmail.com', // list of receivers
     subject: 'Email Example', // Subject line
     text: text
   };
