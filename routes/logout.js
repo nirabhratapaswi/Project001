@@ -16,6 +16,7 @@ router.get('/', function(req, res, next) {
   }
   res.redirect('/login');*/
   req.session.state = 0;
+  //req.session.state = 0;
   res.redirect('/login');
 });
 
