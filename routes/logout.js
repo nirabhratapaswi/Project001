@@ -15,8 +15,9 @@ router.get('/', function(req, res, next) {
     req.session.destroy(function() {});
   }
   res.redirect('/login');*/
-  req.session.state = 0;
-  req.session = null;
+  req.session.reset();
+  res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+  res.header('pragma', 'no-cache');
   res.redirect('/login');
 });
 

@@ -3,7 +3,9 @@
   <head>
 
     <title>Login</title>
-
+    <meta name="cache-control" content="no-cache" />
+    <meta name="expires" content="0" />
+    <meta name="pragma" content="no-cache" />
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <!-- jQuery library -->
@@ -13,6 +15,15 @@
 
   </head>
   <body>
+    <input type="hidden" id="refreshed" value="no">
+                 <script type="text/javascript">
+                  onload=function(){
+
+                    var e=document.getElementById("refreshed");
+                    if(e.value=="no")e.value="yes";
+                    else{e.value="no";location.reload();}
+                  }
+                </script>
 
     <div id="navigation">
     </div>

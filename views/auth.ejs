@@ -1,11 +1,24 @@
 <!DOCTYPE html>
 <html>
   <head>
-
+    <meta name="cache-control" content="no-cache" />
+    <meta name="expires" content="0" />
+    <meta name="pragma" content="no-cache" />
     <title>Authentication</title>
   </head>
   <body>
+    <!--<input type="hidden" id="refreshed" value="no">
+                 <script type="text/javascript">
+                 window.onload = function() {
+                   location.reload();
+                 }
+                  onload=function(){
 
+                    var e=document.getElementById("refreshed");
+                    if(e.value=="no")e.value="yes";
+                    else{e.value="no";location.reload();}
+                  }
+                </script>-->
     <h1>Login Successful</h1>
     <p>Logged in as: <%= username %></p>
     <button><a href="/logout">Logout</button>

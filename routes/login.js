@@ -1,33 +1,27 @@
 var express = require('express');
 var router = express.Router();
 var dataStore = '';
-
+var session = require('client-sessions');
 var mysql = require('mysql');
 
 var user = [];
 
 /* GET login page. */
 router.get('/', function(req, res, next) {
-  /*var views = req.session.views;
-  if(views) {
-    views++;
+  res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+  res.header('pragma', 'no-cache');
+  if(req.session && req.session.user) {
+    res.render('loggedIn', { username: req.session.user.Name })
   }
   else {
-    views = 1;
+    res.render('login', { notice: "Logged Out" } );
   }
-  req.session.destroy(function (err) {
-    //
-  });
-  if(req.session) {
-    views = 0;
-  }
-  if(!req.session) {
-    views = 10;
-  }*/
-  if(req.session == null)
+
+  /*if(req.session == null)
     res.render('login', { notice: "Logged Out" } );
   else
     res.render('loggedIn', { username: req.session.username } );
+  */
 });
 
 module.exports = router;
