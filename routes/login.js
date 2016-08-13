@@ -12,7 +12,7 @@ router.get('/', function(req, res, next) {
   if(sess.state == 0)
     res.render('login', { notice: "Logged Out" } );
   else
-    res.render('loggedIn', { username: sess.username } );
+    res.render('loggedIn', { username: sess.secret } );//sess.username } );
 });
 
 module.exports = router;
