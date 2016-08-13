@@ -9,14 +9,10 @@ var redirect = require('express-redirect');
 var sess;
 
 router.get('/', function(req, res, next) {
-  /*if(req.session) {
-    //req.session.auth = null;
-    //res.clearCookie('auth');
-    req.session.destroy(function() {});
-  }
-  res.redirect('/login');*/
-  req.session.state = 0;
-  //req.session.state = 0;
+
+  req.session.reset();
+  res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+  res.header('pragma', 'no-cache');
   res.redirect('/login');
 });
 

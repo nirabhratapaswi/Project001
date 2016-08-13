@@ -1,22 +1,22 @@
 var express = require('express');
 var router = express.Router();
-var session = require('express-session');
 var bodyParser = require('body-parser');
 var redirect = require('express-redirect');
 var bcrypt = require('bcrypt');
-
+var session = require('client-sessions');
 var mysql = require('mysql');
 
 var user = [];
 
 /* POST Authorization page. */
 
-var sess;
+//var sess;
 
 router.post('/', function(req, res, next) {
+  res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+  res.header('pragma', 'no-cache');
   var found = 0;
   var notFound = 0;
-  sess = req.session;
   var connection = req.app.locals.connection;
   connection.query('SELECT * FROM USERS;', function(err, rows, fields) {
     if(err) throw err;
@@ -24,36 +24,17 @@ router.post('/', function(req, res, next) {
     function forloop() {
       for(i = 0; i < rows.length ; i++) {
         if( (rows[i].Roll == req.body.roll || rows[i].Name == req.body.roll) ) {
-          sess.username = rows[i].Name;
           next();
           break;
-          //sess.password = req.body.pwd;
-          //res.redirect('/checkLogin');
-          /*sess.username = rows[i].Name;
-          bcrypt.compare(req.body.pwd, rows[i].Password, function(err, resp) {
-          if(resp) {
-            found = 1;
-            console.log("Password is correct!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            sess.state = 1;
-            //sess.username = rows[i].Name;
-            res.render('auth', { username: sess.username } );
-            //res.redirect('/login');
-          }
-          else
-            sess.username = "";
-            res.render('login', { notice: "Incorrect username/password" } );
-          });*/
         }
         else if( (rows[i].Roll != req.body.roll && rows[i].Name != req.body.roll) && (i == rows.length-1) ) {
           res.render('login', { notice: "User not found!" } );
         }
       }
-      //var timer = setTimeout(check(res), 5000);
     }
     forloop();
   });
 }, function(req, res, next) {
-  sess = req.session;
   var connection = req.app.locals.connection;
   connection.query('SELECT * FROM USERS;', function(err, rows, fields) {
     if(err) throw err;
@@ -61,18 +42,19 @@ router.post('/', function(req, res, next) {
     function forloop() {
       for(i = 0; i < rows.length ; i++) {
         if( (rows[i].Roll == req.body.roll || rows[i].Name == req.body.roll) ) {
-          sess.username = rows[i].Name;
+          var user = rows[i];
           bcrypt.compare(req.body.pwd, rows[i].Password, function(err, resp) {
           if(resp) {
+            req.user = user;
+            delete req.user.Password;
+            req.session.user = user;
+            res.locals.user = user;
             found = 1;
-            console.log("Password is correct!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            sess.state = 1;
-            //sess.username = rows[i].Name;
-            res.render('auth', { username: sess.username } );
-            //res.redirect('/login');
+            console.log("Login by " + user.Name + "...");
+            //res.render('auth', { username: req.session.user.Name } );
+            res.redirect('/auth');
           }
           else
-            sess.username = "";
             res.render('login', { notice: "Incorrect username/password" } );
           });
         }
@@ -80,6 +62,17 @@ router.post('/', function(req, res, next) {
     }
     forloop();
   });
+});
+
+router.get('/', function(req, res, next) {
+  res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+  res.header('pragma', 'no-cache');
+  if(req.session && req.session.user) {
+    res.render('auth', { username: req.session.user.Name })
+  }
+  else {
+    res.render('login', { notice: "Logged Out" } );
+  }
 });
 
 

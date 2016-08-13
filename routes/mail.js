@@ -27,8 +27,7 @@ router.get('/', function(req, res, next) {
         console.log('Message sent: ' + info.response);
         res.json({yo: info.response});
     };
-});
-  //res.render('index');
+  });
 });
 
 module.exports = router;
