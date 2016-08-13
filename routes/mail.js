@@ -15,7 +15,7 @@ router.get('/', function(req, res, next) {
   var text = 'Hello world from Nirabhra!';
   var mailOptions = {
     from: 'chemicalnitt19@gmail.com', // sender address
-    to: 'nirabhratapaswi112121@gmail.com', // list of receivers
+    to: 'nirabhratapaswi112121de@gmail.com', // list of receivers
     subject: 'Email Example', // Subject line
     text: text
   };
