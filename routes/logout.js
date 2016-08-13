@@ -9,9 +9,13 @@ var redirect = require('express-redirect');
 var sess;
 
 router.get('/', function(req, res, next) {
+  /*if(req.session) {
+    //req.session.auth = null;
+    //res.clearCookie('auth');
+    req.session.destroy(function() {});
+  }
+  res.redirect('/login');*/
   req.session.state = 0;
-  //req.session.state = "loggedout";
-  //res.render('login', { notice: "Failed" } );
   res.redirect('/login');
 });
 

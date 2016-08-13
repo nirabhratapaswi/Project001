@@ -21,27 +21,64 @@ router.post('/', function(req, res, next) {
   connection.query('SELECT * FROM USERS;', function(err, rows, fields) {
     if(err) throw err;
     var i = 0;
-    for(i = 0; i < rows.length ; i++) {
-      if( (rows[i].Roll == req.body.roll)) {
-        //console.log(req.body.pwd + "--" + rows[i].Password);
-        console.log("Entered");
-        sess.username = rows[i].Name;
-        bcrypt.compare(req.body.pwd, rows[i].Password, function(err, resp) {
-        if(resp) {
-          found = 1;
-          console.log("Password is correct!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-          sess.state = 1;
-          //sess.username = rows[i].Name;
-          res.render('auth', { username: sess.username } );
+    function forloop() {
+      for(i = 0; i < rows.length ; i++) {
+        if( (rows[i].Roll == req.body.roll || rows[i].Name == req.body.roll) ) {
+          sess.username = rows[i].Name;
+          next();
+          break;
+          //sess.password = req.body.pwd;
+          //res.redirect('/checkLogin');
+          /*sess.username = rows[i].Name;
+          bcrypt.compare(req.body.pwd, rows[i].Password, function(err, resp) {
+          if(resp) {
+            found = 1;
+            console.log("Password is correct!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            sess.state = 1;
+            //sess.username = rows[i].Name;
+            res.render('auth', { username: sess.username } );
+            //res.redirect('/login');
+          }
+          else
+            sess.username = "";
+            res.render('login', { notice: "Incorrect username/password" } );
+          });*/
         }
-        else
-          sess.username = "";
-          res.render('login', { notice: "Incorrect username/password" } );
-        });
+        else if( (rows[i].Roll != req.body.roll && rows[i].Name != req.body.roll) && (i == rows.length-1) ) {
+          res.render('login', { notice: "User not found!" } );
+        }
+      }
+      //var timer = setTimeout(check(res), 5000);
+    }
+    forloop();
+  });
+}, function(req, res, next) {
+  sess = req.session;
+  var connection = req.app.locals.connection;
+  connection.query('SELECT * FROM USERS;', function(err, rows, fields) {
+    if(err) throw err;
+    var i = 0;
+    function forloop() {
+      for(i = 0; i < rows.length ; i++) {
+        if( (rows[i].Roll == req.body.roll || rows[i].Name == req.body.roll) ) {
+          sess.username = rows[i].Name;
+          bcrypt.compare(req.body.pwd, rows[i].Password, function(err, resp) {
+          if(resp) {
+            found = 1;
+            console.log("Password is correct!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            sess.state = 1;
+            //sess.username = rows[i].Name;
+            res.render('auth', { username: sess.username } );
+            //res.redirect('/login');
+          }
+          else
+            sess.username = "";
+            res.render('login', { notice: "Incorrect username/password" } );
+          });
+        }
       }
     }
-    if(found == 20)
-      res.render('login', { notice: "Incorrect username/password" } );
+    forloop();
   });
 });
 
