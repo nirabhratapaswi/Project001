@@ -27,28 +27,11 @@ router.post('/', function(req, res, next) {
           sess.username = rows[i].Name;
           next();
           break;
-          //sess.password = req.body.pwd;
-          //res.redirect('/checkLogin');
-          /*sess.username = rows[i].Name;
-          bcrypt.compare(req.body.pwd, rows[i].Password, function(err, resp) {
-          if(resp) {
-            found = 1;
-            console.log("Password is correct!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            sess.state = 1;
-            //sess.username = rows[i].Name;
-            res.render('auth', { username: sess.username } );
-            //res.redirect('/login');
-          }
-          else
-            sess.username = "";
-            res.render('login', { notice: "Incorrect username/password" } );
-          });*/
         }
         else if( (rows[i].Roll != req.body.roll && rows[i].Name != req.body.roll) && (i == rows.length-1) ) {
           res.render('login', { notice: "User not found!" } );
         }
       }
-      //var timer = setTimeout(check(res), 5000);
     }
     forloop();
   });
@@ -61,18 +44,20 @@ router.post('/', function(req, res, next) {
     function forloop() {
       for(i = 0; i < rows.length ; i++) {
         if( (rows[i].Roll == req.body.roll || rows[i].Name == req.body.roll) ) {
-          sess.username = rows[i].Name;
+          var name = rows[i].Name;
           bcrypt.compare(req.body.pwd, rows[i].Password, function(err, resp) {
           if(resp) {
+            sess.regenerate(function() {
+              sess.auth = name;
+            });
+            sess.username = name;
             found = 1;
             console.log("Password is correct!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             sess.state = 1;
-            //sess.username = rows[i].Name;
             res.render('auth', { username: sess.username } );
-            //res.redirect('/login');
           }
           else
-            sess.username = "";
+            //sess.username = "";
             res.render('login', { notice: "Incorrect username/password" } );
           });
         }

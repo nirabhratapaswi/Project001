@@ -24,11 +24,10 @@ router.get('/', function(req, res, next) {
   if(!req.session) {
     views = 10;
   }*/
-  var sess = req.session;
-  if(sess.state == 0)
+  if(req.session == null)
     res.render('login', { notice: "Logged Out" } );
   else
-    res.render('loggedIn', { username: sess.username } );
+    res.render('loggedIn', { username: req.session.username } );
 });
 
 module.exports = router;
