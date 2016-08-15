@@ -67,7 +67,12 @@ router.get('/', function(req, res, next) {
   res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
   res.header('pragma', 'no-cache');
   if(req.session && req.session.user) {
-    res.render('LoggedIn/mail', { username: req.session.user.Name, notice: "Logged In" })
+    var connection = req.app.locals.connection;
+    connection.query('SELECT * FROM EMAILS WHERE Roll = "' + req.session.user.Roll + '";', function(err, rows, fields) {
+      if(err) throw err;
+      console.log(rows);
+      res.render('LoggedIn/mail', { username: req.session.user.Name, notice: "Logged In", mails: rows });
+    });
   }
   else {
     res.redirect('/login');

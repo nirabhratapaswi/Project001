@@ -41,9 +41,18 @@
       <tr>
         <th>Sender</th>
         <th>Subject</th>
-        <th>Time</th>
+        <th>Date</th>
       </tr>
     </thead>
+    <tbody>
+        <% for(var i = 0; i < mails.length; i++) { %>
+          <tr>
+            <td><%= mails[i].Roll %></td>
+            <td><%= mails[i].Subject %></td>
+            <td><%= mails[i].Date %></td>
+          </tr>
+        <% } %>
+    </tbody>
     </table>
     <p>Logged in as: <% if(username) %><%= username; %></p>
     <button class="btn btn-info"><a href="/Email/createmail">Create Mail</button>

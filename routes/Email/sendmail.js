@@ -19,16 +19,19 @@ router.get('/', function(req, res, next) {
 
 router.post('/', function(req, res, next) {
   var connection = req.app.locals.connection;
-  var sqlQuery = "INSERT INTO EMAILS(Roll, Subject, Body) VALUES('"
-  + "102115029" + "','"
+  var time = new Date();
+  var sqlQuery = "INSERT INTO EMAILS(Roll, Subject, Body, Time, Date) VALUES('"
+  + req.session.user.Roll + "','"
   + req.body.subject + "','"
-  + req.body.bodytext + "');";
+  + req.body.bodytext + "','"
+  + time.getTime().toString() + "','"
+  + time +"');";
   connection.query(sqlQuery, function(err, rows, fields) {
     if(err)
       throw err;
     console.log("Local Email sent successfully!!");
     //var text = 'Hi ' + req.body.Name + ', this is the Official Chemcial Website Responding!';
-    res.redirect('/');
+    res.redirect('/auth');
     //res.render('success', { notice: "Success!!" } );
   });
 });
