@@ -41,15 +41,18 @@
       <tr>
         <th>Sender</th>
         <th>Subject</th>
+        <th>Body</th>
         <th>Date</th>
       </tr>
     </thead>
     <tbody>
         <% for(var i = 0; i < mails.length; i++) { %>
           <tr>
-            <td><%= mails[i].Roll %></td>
+            <td><%= mails[i].Sender %></td>
             <td><%= mails[i].Subject %></td>
+            <td><%= mails[i].Body %></td>
             <td><%= mails[i].Date %></td>
+            <td><a href="#">Delete</td>
           </tr>
         <% } %>
     </tbody>

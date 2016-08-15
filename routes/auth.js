@@ -68,15 +68,14 @@ router.get('/', function(req, res, next) {
   res.header('pragma', 'no-cache');
   if(req.session && req.session.user) {
     var connection = req.app.locals.connection;
-    connection.query('SELECT * FROM EMAILS WHERE Roll = "' + req.session.user.Roll + '";', function(err, rows, fields) {
+    var sqlQuery ='SELECT * FROM EMAILS WHERE Receiver = "' + req.session.user.Roll + '" ORDER BY Time DESC;';
+    connection.query(sqlQuery, function(err, rows, fields) {
       if(err) throw err;
-      console.log(rows);
       res.render('LoggedIn/mail', { username: req.session.user.Name, notice: "Logged In", mails: rows });
     });
   }
   else {
     res.redirect('/login');
-    //res.render('login', { notice: "Logged Out" } );
   }
 });
 
