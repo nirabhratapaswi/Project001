@@ -10,6 +10,8 @@
   </head>
   <body>
     <div id="notice">
+      <% if(notice) %>
+        <p><%= notice; %></p>
     </div>
     <nav class="navbar navbar-inverse">
       <div class="container-fluid">
@@ -33,6 +35,17 @@
         </div>
       </div>
     </nav>
-    <p>Logged in as: <%= username %></p>
+
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>Sender</th>
+        <th>Subject</th>
+        <th>Time</th>
+      </tr>
+    </thead>
+    </table>
+    <p>Logged in as: <% if(username) %><%= username; %></p>
+    <button class="btn btn-info"><a href="/Email/createmail">Create Mail</button>
   </body>
 </html>

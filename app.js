@@ -14,6 +14,8 @@ var logout = require('./routes/logout');
 var loginfirst = require('./routes/loginfirst');
 var registration = require('./routes/registration');
 var mail = require('./routes/mail');
+var Emailcreate = require('./routes/Email/createmail');
+var Emailsend = require('./routes/Email/sendmail');
 //var users = require('./routes/users');
 
 var app = express();
@@ -48,6 +50,8 @@ app.use('/logout', logout);
 app.use('/loginfirst', loginfirst);
 app.use('/registration', registration);
 app.use('/mail', mail);
+app.use('/Email/sendmail', Emailsend);
+app.use('/Email/createmail', Emailcreate);
 
 //app.use('/users', users);
 

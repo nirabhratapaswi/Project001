@@ -3,7 +3,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('LoggedIn/mail', { notice: "Logged In" } );
+  res.render('LoggedIn/createMail', { notice: "Logged In" } );
 });
 
 module.exports = router;
