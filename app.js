@@ -18,6 +18,7 @@ var Emailcreate = require('./routes/Email/createmail');
 var Emailsend = require('./routes/Email/sendmail');
 var trial = require('./routes/ajax/trial');
 var responseAjax = require('./routes/ajax/responseAjax');
+var deleteMail = require('./routes/ajax/deleteMail');
 //var users = require('./routes/users');
 
 var app = express();
@@ -32,7 +33,7 @@ app.set('view engine', 'ejs');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
@@ -56,6 +57,7 @@ app.use('/Email/sendmail', Emailsend);
 app.use('/Email/createmail', Emailcreate);
 app.use('/ajax/trial', trial);
 app.use('/ajax/responseAjax', responseAjax);
+app.use('/ajax/deleteMail', deleteMail);
 
 //app.use('/users', users);
 
