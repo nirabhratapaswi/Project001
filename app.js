@@ -11,7 +11,6 @@ var routes = require('./routes/index');
 var login = require('./routes/login');
 var auth = require('./routes/auth');
 var logout = require('./routes/logout');
-var loginfirst = require('./routes/loginfirst');
 var registration = require('./routes/registration');
 var mail = require('./routes/mail');
 var Emailcreate = require('./routes/Email/createmail');
@@ -19,6 +18,7 @@ var Emailsend = require('./routes/Email/sendmail');
 var trial = require('./routes/ajax/trial');
 var responseAjax = require('./routes/ajax/responseAjax');
 var deleteMail = require('./routes/ajax/deleteMail');
+var sentmail = require('./routes/Email/sentmail');
 //var users = require('./routes/users');
 
 var app = express();
@@ -50,7 +50,6 @@ app.use('/', routes);
 app.use('/login', login);
 app.use('/auth', auth);
 app.use('/logout', logout);
-app.use('/loginfirst', loginfirst);
 app.use('/registration', registration);
 app.use('/mail', mail);
 app.use('/Email/sendmail', Emailsend);
@@ -58,6 +57,7 @@ app.use('/Email/createmail', Emailcreate);
 app.use('/ajax/trial', trial);
 app.use('/ajax/responseAjax', responseAjax);
 app.use('/ajax/deleteMail', deleteMail);
+app.use('/Email/sentmail', sentmail);
 
 //app.use('/users', users);
 

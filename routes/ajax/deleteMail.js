@@ -6,7 +6,7 @@ router.post('/', function(req, res, next) {
   var connection = req.app.locals.connection;
   var dataReceived = req.body.id;
   //console.log(dataReceived);
-  var mysqlQuery = "DELETE FROM EMAILS WHERE id = " + dataReceived + ";";
+  var mysqlQuery = "DELETE FROM " + req.session.user.Roll + "Email WHERE id = " + dataReceived + ";";
   connection.query(mysqlQuery, function(err, rows, fields) {
     if(err)
       throw err;

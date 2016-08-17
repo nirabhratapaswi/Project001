@@ -49,13 +49,20 @@ router.post('/', function(req, res, next) {
     });
 }, function(req, res, next) {
     var connection = req.app.locals.connection;
-    sqlQuery = "INSERT INTO EMAILS(Sender, Receiver, SenderName, ReceiverName, Subject, Body) VALUES('"
+    sqlQuery = "INSERT INTO " + req.body.receiver + "Email(Sender, SenderName, Subject, Body, MailStatus) VALUES('"
     + req.session.user.Roll + "','"
-    + req.body.receiver + "','"
     + req.session.user.Name + "','"
+    + req.body.subject + "','"
+    + req.body.bodytext + "', 'R');";
+    var sqlQueryS = "INSERT INTO " + req.session.user.Roll + "Email(Sender, SenderName, Subject, Body, MailStatus) VALUES('"
+    + req.body.receiver + "','"
     + receiverName + "','"
     + req.body.subject + "','"
-    + req.body.bodytext + "');";
+    + req.body.bodytext + "', 'S');";
+    connection.query(sqlQueryS, function(err, rows, fields) {
+      if(err)
+        throw err;
+    });
     connection.query(sqlQuery, function(err, rows, fields) {
       if(err)
         throw err;

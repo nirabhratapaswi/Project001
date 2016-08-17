@@ -42,7 +42,12 @@ router.post('/', function(req, res, next) {
       + req.body.Place +"','"
       + req.body.Auth +"','"
       + stpass +"');";
-      var sqlCreateTable = "CREATE TABLE " + req.body.Roll + "Email(id int NOT NULL AUTO_INCREMENT, Sender char(9), SenderName varchar(100));"
+      var sqlCreateTable = "CREATE TABLE " + req.body.Roll + "Email(id int NOT NULL AUTO_INCREMENT, Sender char(9) NOT NULL, SenderName varchar(100) NOT NULL, Subject text, Body longtext, Time timestamp, Attachment longblob, MailStatus char(1), PRIMARY KEY(id));";
+      connection.query(sqlCreateTable, function(err, rows, fields) {
+        if(err)
+          throw err;
+        console.log("Table created!");
+      });
       connection.query(sqlQuery, function(err, rows, fields) {
         if(err)
           throw err;
