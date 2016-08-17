@@ -21,7 +21,7 @@ function count() {
     mailNodes = document.getElementById("mailshow").childNodes[i].childNodes;
     text += mailNodes[11].innerHTML;
     mailNodes[11].id = mailNodes[9].innerHTML;
-    mailNodes[11].innerHTML = "<td><a href='#' onclick='run(" + mailNodes[9].innerHTML + ")'>Test</a></td>";
+    mailNodes[11].innerHTML = "<td><a href='#' onclick='run(" + mailNodes[9].innerHTML + ")'>Delete</a></td>";
   }
   document.getElementById("p011").innerHTML = text;
 }
