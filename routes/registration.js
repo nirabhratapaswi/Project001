@@ -42,13 +42,11 @@ router.post('/', function(req, res, next) {
       + req.body.Place +"','"
       + req.body.Auth +"','"
       + stpass +"');";
+      var sqlCreateTable = "CREATE TABLE " + req.body.Roll + "Email(id int NOT NULL AUTO_INCREMENT, Sender char(9), SenderName varchar(100));"
       connection.query(sqlQuery, function(err, rows, fields) {
         if(err)
           throw err;
         console.log("Row added successfully!!");
-
-
-
         var text = 'Hi ' + req.body.Name + ', this is the Official Chemcial Website Responding!';
         var mailOptions = {
           from: 'bluff@gmail.com', // sender address
