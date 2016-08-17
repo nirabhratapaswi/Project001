@@ -6,6 +6,8 @@ var redirect = require('express-redirect');
 var bcrypt = require('bcrypt');
 var mysql = require('mysql');
 var nodemailer = require('nodemailer');
+var sqlQuery = '';
+var receiverName = '';
 
 var user = [];
 
@@ -38,14 +40,22 @@ router.post('/', function(req, res, next) {
   });
 }, function(req, res, next) {
     var connection = req.app.locals.connection;
-    var time = new Date();
-    var sqlQuery = "INSERT INTO EMAILS(Sender, Receiver, Subject, Body, Time, Date) VALUES('"
-    + req.session.user.Name + "','"
+    sqlQuery = "SELECT Name FROM USERS WHERE Roll ='";
+    connection.query(sqlQuery + req.body.receiver + "';", function(err, rows, fields) {
+      if (err)
+        throw err;
+      receiverName = rows[0].Name;
+      next();
+    });
+}, function(req, res, next) {
+    var connection = req.app.locals.connection;
+    sqlQuery = "INSERT INTO EMAILS(Sender, Receiver, SenderName, ReceiverName, Subject, Body) VALUES('"
+    + req.session.user.Roll + "','"
     + req.body.receiver + "','"
+    + req.session.user.Name + "','"
+    + receiverName + "','"
     + req.body.subject + "','"
-    + req.body.bodytext + "','"
-    + time.getTime().toString() + "','"
-    + time +"');";
+    + req.body.bodytext + "');";
     connection.query(sqlQuery, function(err, rows, fields) {
       if(err)
         throw err;

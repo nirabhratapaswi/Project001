@@ -16,6 +16,8 @@ var registration = require('./routes/registration');
 var mail = require('./routes/mail');
 var Emailcreate = require('./routes/Email/createmail');
 var Emailsend = require('./routes/Email/sendmail');
+var trial = require('./routes/ajax/trial');
+var responseAjax = require('./routes/ajax/responseAjax');
 //var users = require('./routes/users');
 
 var app = express();
@@ -52,6 +54,8 @@ app.use('/registration', registration);
 app.use('/mail', mail);
 app.use('/Email/sendmail', Emailsend);
 app.use('/Email/createmail', Emailcreate);
+app.use('/ajax/trial', trial);
+app.use('/ajax/responseAjax', responseAjax);
 
 //app.use('/users', users);
 

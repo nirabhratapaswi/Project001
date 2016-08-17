@@ -68,7 +68,8 @@ router.get('/', function(req, res, next) {
   res.header('pragma', 'no-cache');
   if(req.session && req.session.user) {
     var connection = req.app.locals.connection;
-    var sqlQuery ='SELECT * FROM EMAILS WHERE Receiver = "' + req.session.user.Roll + '" ORDER BY Time DESC;';
+    var sqlQuery = 'SELECT * FROM EMAILS WHERE Receiver = "' + req.session.user.Roll + '" ORDER BY Time DESC;';
+    var sqlQueryName = 'SELECT Name FROM USERS WHERE Roll = "';
     connection.query(sqlQuery, function(err, rows, fields) {
       if(err) throw err;
       res.render('LoggedIn/mail', { username: req.session.user.Name, notice: "Logged In", mails: rows });

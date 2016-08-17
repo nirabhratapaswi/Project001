@@ -7,13 +7,18 @@
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/javascripts/mail.js"></script>
     <style>
       #id001 {
         color: red;
       }
+      .hide {
+        visibility: none;
+      }
     </style>
   </head>
   <body>
+    <p id="p011"></p>
     <div id="notice">
       <% if(notice) %>
         <p><%= notice; %></p>
@@ -50,14 +55,15 @@
         <th>Date</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody id="mailshow">
         <% for(var i = 0; i < mails.length; i++) { %>
           <tr>
-            <td><%= mails[i].Sender %></td>
+            <td><%= mails[i].SenderName %></td>
             <td><%= mails[i].Subject %></td>
             <td><%= mails[i].Body %></td>
-            <td><%= mails[i].Date %></td>
-            <td><a href="#">Delete</td>
+            <td><%= mails[i].Time %></td>
+            <td class='hide'><%= mails[i].id %></td>
+            <td><a href="#" onclick="">Delete</a></td>
           </tr>
         <% } %>
     </tbody>
