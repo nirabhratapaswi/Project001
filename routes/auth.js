@@ -15,31 +15,35 @@ var user = [];
 router.post('/', function(req, res, next) {
   res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
   res.header('pragma', 'no-cache');
-  req.checkBody('roll', 'Enter 9 digit Chemical Dept specific roll number!').matches(/1021150\d\d/g);
-  //req.assert('roll', 'Enter username').notEmpty();
+  req.checkBody('roll', 'Enter 9 digit Chemical Dept specific roll number!').matches(/(1021150[0-6]\d|102115070)/g);
+  req.sanitize('roll').escape().trim();
+  req.sanitize('pwd').escape().trim();
   res.locals.err = req.validationErrors(true);
   if(res.locals.err) {
     console.log(res.locals.err.roll.msg);
+    res.render('login', { notice: "Invalid Username!" } );
   }
-  var found = 0;
-  var notFound = 0;
-  var connection = req.app.locals.connection;
-  connection.query('SELECT * FROM USERS;', function(err, rows, fields) {
-    if(err) throw err;
-    var i = 0;
-    function forloop() {
-      for(i = 0; i < rows.length ; i++) {
-        if( (rows[i].Roll == req.body.roll || rows[i].Name == req.body.roll) ) {
-          next();
-          break;
-        }
-        else if( (rows[i].Roll != req.body.roll && rows[i].Name != req.body.roll) && (i == rows.length-1) ) {
-          res.render('login', { notice: "User not found!" } );
+  else {
+    var found = 0;
+    var notFound = 0;
+    var connection = req.app.locals.connection;
+    connection.query('SELECT * FROM USERS;', function(err, rows, fields) {
+      if(err) throw err;
+      var i = 0;
+      function forloop() {
+        for(i = 0; i < rows.length ; i++) {
+          if( (rows[i].Roll == req.body.roll || rows[i].Name == req.body.roll) ) {
+            next();
+            break;
+          }
+          else if( (rows[i].Roll != req.body.roll && rows[i].Name != req.body.roll) && (i == rows.length-1) ) {
+            res.render('login', { notice: "User not found!" } );
+          }
         }
       }
-    }
-    forloop();
-  });
+      forloop();
+    });
+  }
 }, function(req, res, next) {
   var connection = req.app.locals.connection;
   connection.query('SELECT * FROM USERS;', function(err, rows, fields) {

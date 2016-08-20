@@ -21,23 +21,34 @@ router.get('/', function(req, res, next) {
 
 router.post('/', function(req, res, next) {
   var connection = req.app.locals.connection;
-  var checkSqlQuery = "SELECT Roll FROM USERS";
-  connection.query(checkSqlQuery, function(error, row, field) {
-    if (error)
-      throw error;
-    for(var i = 0; i < row.length; i++) {
-      if(req.body.receiver == row[i].Roll && req.body.receiver != req.session.user.Roll) {
-        next();
-        break;
+  req.checkBody('receiver', 'Enter 9 digit Chemical Dept specific roll number!').matches(/(1021150[0-6]\d|102115070)/g);
+  res.locals.err = req.validationErrors(true);
+  if(res.locals.err) {
+    console.log("Error detected while sending mail : " + res.locals.err.receiver.msg);
+    res.render("LoggedIn/createMail", { notice: "Wrong Roll Number!!" } );
+  }
+  else {
+    req.sanitize('receiver').escape().trim();
+    req.sanitize('subject').escape().trim();
+    req.sanitize('bodytext').escape().trim();
+    var checkSqlQuery = "SELECT Roll FROM USERS";
+    connection.query(checkSqlQuery, function(error, row, field) {
+      if (error)
+        throw error;
+      for(var i = 0; i < row.length; i++) {
+        if(req.body.receiver == row[i].Roll && req.body.receiver != req.session.user.Roll) {
+          next();
+          break;
+        }
+        else if(req.body.receiver == req.session.user.Roll) {
+          res.render("LoggedIn/createMail", { notice: "Cant send yourself a mail!!" } );
+          break;
+        }
+        else if((req.body.receiver != row[i].Roll &&  i == row.length - 1))
+          res.render("LoggedIn/createMail", { notice: "Incorrect Reviever Roll Number!" } );
       }
-      else if(req.body.receiver == req.session.user.Roll) {
-        res.render("LoggedIn/createMail", { notice: "Cant send yourself a mail!!" } );
-        break;
-      }
-      else if((req.body.receiver != row[i].Roll &&  i == row.length - 1))
-        res.render("LoggedIn/createMail", { notice: "Incorrect Reviever Roll Number!" } );
-    }
-  });
+    });
+  }
 }, function(req, res, next) {
     var connection = req.app.locals.connection;
     sqlQuery = "SELECT Name FROM USERS WHERE Roll ='";
