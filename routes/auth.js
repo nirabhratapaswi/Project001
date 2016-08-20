@@ -5,6 +5,7 @@ var redirect = require('express-redirect');
 var bcrypt = require('bcrypt');
 var session = require('client-sessions');
 var mysql = require('mysql');
+var atob = require('atob');
 
 var user = [];
 
@@ -15,7 +16,7 @@ var user = [];
 router.post('/', function(req, res, next) {
   res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
   res.header('pragma', 'no-cache');
-  req.checkBody('roll', 'Enter 9 digit Chemical Dept specific roll number!').matches(/(1021150[0-6]\d|102115070|102115087)/g);
+  req.checkBody('roll', 'Enter 9 digit Chemical Dept specific roll number!').matches(/(1021150[0-6]\d|102115070)/g);
   req.sanitize('roll').escape().trim();
   req.sanitize('pwd').escape().trim();
   res.locals.err = req.validationErrors(true);
@@ -82,6 +83,10 @@ router.get('/', function(req, res, next) {
     var sqlQueryName = 'SELECT Name FROM USERS WHERE Roll = "';
     connection.query(sqlQuery, function(err, rows, fields) {
       if(err) throw err;
+      for(var i = 0; i < rows.length; i++) {
+        rows[i].Subject = b64DecodeUnicode(rows[i].Subject);
+        rows[i].Body = b64DecodeUnicode(rows[i].Body);
+      }
       res.render('LoggedIn/mail', { username: req.session.user.Name, notice: "Logged In", mails: rows });
     });
   }
@@ -90,5 +95,10 @@ router.get('/', function(req, res, next) {
   }
 });
 
+function b64DecodeUnicode(str) {
+    return decodeURIComponent(Array.prototype.map.call(atob(str), function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+}
 
 module.exports = router;

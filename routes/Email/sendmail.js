@@ -6,6 +6,8 @@ var redirect = require('express-redirect');
 var bcrypt = require('bcrypt');
 var mysql = require('mysql');
 var nodemailer = require('nodemailer');
+var btoa = require('btoa');
+
 var sqlQuery = '';
 var receiverName = '';
 
@@ -21,7 +23,7 @@ router.get('/', function(req, res, next) {
 
 router.post('/', function(req, res, next) {
   var connection = req.app.locals.connection;
-  req.checkBody('receiver', 'Enter 9 digit Chemical Dept specific roll number!').matches(/(1021150[0-6]\d|102115070|102115087)/g);
+  req.checkBody('receiver', 'Enter 9 digit Chemical Dept specific roll number!').matches(/(1021150[0-6]\d|102115070)/g);
   res.locals.err = req.validationErrors(true);
   if(res.locals.err) {
     console.log("Error detected while sending mail : " + res.locals.err.receiver.msg);
@@ -29,6 +31,8 @@ router.post('/', function(req, res, next) {
   }
   else {
     req.sanitize('receiver').escape().trim();
+    req.body.subject = b64EncodeUnicode(req.body.subject);
+    req.body.bodytext = b64EncodeUnicode(req.body.bodytext);
     req.sanitize('subject').escape().trim();
     req.sanitize('bodytext').escape().trim();
     var checkSqlQuery = "SELECT Roll FROM USERS";
@@ -82,5 +86,10 @@ router.post('/', function(req, res, next) {
     });
 });
 
+function b64EncodeUnicode(str) {
+  return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+      return String.fromCharCode('0x' + p1);
+  }));
+}
 
 module.exports = router;
