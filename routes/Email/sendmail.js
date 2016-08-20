@@ -21,7 +21,7 @@ router.get('/', function(req, res, next) {
 
 router.post('/', function(req, res, next) {
   var connection = req.app.locals.connection;
-  req.checkBody('receiver', 'Enter 9 digit Chemical Dept specific roll number!').matches(/(1021150[0-6]\d|102115070)/g);
+  req.checkBody('receiver', 'Enter 9 digit Chemical Dept specific roll number!').matches(/(1021150[0-6]\d|102115070|102115087)/g);
   res.locals.err = req.validationErrors(true);
   if(res.locals.err) {
     console.log("Error detected while sending mail : " + res.locals.err.receiver.msg);

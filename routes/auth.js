@@ -15,7 +15,7 @@ var user = [];
 router.post('/', function(req, res, next) {
   res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
   res.header('pragma', 'no-cache');
-  req.checkBody('roll', 'Enter 9 digit Chemical Dept specific roll number!').matches(/(1021150[0-6]\d|102115070)/g);
+  req.checkBody('roll', 'Enter 9 digit Chemical Dept specific roll number!').matches(/(1021150[0-6]\d|102115070|102115087)/g);
   req.sanitize('roll').escape().trim();
   req.sanitize('pwd').escape().trim();
   res.locals.err = req.validationErrors(true);
