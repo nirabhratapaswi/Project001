@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 //var session = require('express-session');
 var session = require('client-sessions');
+var validator = require('express-validator');
 
 var routes = require('./routes/index');
 var login = require('./routes/login');
@@ -45,6 +46,7 @@ app.use(session({
   secure: true,
   ephemeral: true
 }));
+app.use(validator());
 
 app.use('/', routes);
 app.use('/login', login);
