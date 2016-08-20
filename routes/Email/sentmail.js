@@ -6,6 +6,7 @@ var bcrypt = require('bcrypt');
 var session = require('client-sessions');
 var mysql = require('mysql');
 var Promise = require('promise');
+var atob = require('atob');
 
 var user = [];
 
@@ -28,7 +29,10 @@ router.get('/', function(req, res, next) {
       });
     })
       .then(function(results) {
-        console.log("Resolved!!");
+        for(var i = 0; i < results.length; i++) {
+          results[i].Subject = b64DecodeUnicode(results[i].Subject);
+          results[i].Body = b64DecodeUnicode(results[i].Body);
+        }
         res.render('LoggedIn/sentmail', { username: req.session.user.Name, notice: "Logged In", mails: results });
       })
       .catch(function(results) {
@@ -38,5 +42,10 @@ router.get('/', function(req, res, next) {
 
 });
 
+function b64DecodeUnicode(str) {
+    return decodeURIComponent(Array.prototype.map.call(atob(str), function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+}
 
 module.exports = router;
