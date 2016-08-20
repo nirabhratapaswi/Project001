@@ -16,6 +16,7 @@
     "express-mail": "0.0.1",
     "express-mailer": "^0.3.1",
     "express-redirect": "^1.2.2",
+    "express-validator": "^2.20.8",
     "morgan": "~1.7.0",
     "node-session": "^1.2.1",
     "nodemailer": "^2.5.0",

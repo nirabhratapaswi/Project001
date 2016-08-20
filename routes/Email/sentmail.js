@@ -5,6 +5,7 @@ var redirect = require('express-redirect');
 var bcrypt = require('bcrypt');
 var session = require('client-sessions');
 var mysql = require('mysql');
+var Promise = require('promise');
 
 var user = [];
 
@@ -17,11 +18,23 @@ router.get('/', function(req, res, next) {
     var connection = req.app.locals.connection;
     var sqlQuery = 'SELECT * FROM ' + req.session.user.Roll + 'Email WHERE MailStatus = "S" ORDER BY Time DESC;';
     var sqlQueryName = 'SELECT Name FROM USERS WHERE Roll = "';
-    connection.query(sqlQuery, function(err, rows, fields) {
-      if(err) throw err;
-      res.render('LoggedIn/sentmail', { username: req.session.user.Name, notice: "Logged In", mails: rows });
-    });
-  }
+    new Promise(function(resolve, reject) {
+      connection.query(sqlQuery, function(err, rows, fields) {
+        if(err) {
+          //throw err;
+          reject(err);
+        }
+        resolve(rows);
+      });
+    })
+      .then(function(results) {
+        console.log("Resolved!!");
+        res.render('LoggedIn/sentmail', { username: req.session.user.Name, notice: "Logged In", mails: results });
+      })
+      .catch(function(results) {
+        console.log("Error occured-" + results);
+      });
+  } //end if(req.session && req.session.user)
 
 });
 

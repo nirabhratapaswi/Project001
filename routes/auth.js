@@ -15,6 +15,12 @@ var user = [];
 router.post('/', function(req, res, next) {
   res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
   res.header('pragma', 'no-cache');
+  req.checkBody('roll', 'Enter 9 digit Chemical Dept specific roll number!').matches(/1021150\d\d/g);
+  //req.assert('roll', 'Enter username').notEmpty();
+  res.locals.err = req.validationErrors(true);
+  if(res.locals.err) {
+    console.log(res.locals.err.roll.msg);
+  }
   var found = 0;
   var notFound = 0;
   var connection = req.app.locals.connection;
