@@ -33,8 +33,9 @@ router.post('/', function(req, res, next) {
     req.sanitize('receiver').escape().trim();
     req.body.subject = b64EncodeUnicode(req.body.subject);
     req.body.bodytext = b64EncodeUnicode(req.body.bodytext);
-    req.sanitize('subject').escape().trim();
-    req.sanitize('bodytext').escape().trim();
+    //req.sanitize('subject').escape().trim();
+    //req.sanitize('bodytext').escape().trim();
+    console.log("Subject encoded='" + req.body.subject + "' AND Body encoded='" + req.body.bodytext + "'.");
     var checkSqlQuery = "SELECT Roll FROM USERS";
     connection.query(checkSqlQuery, function(error, row, field) {
       if (error)
