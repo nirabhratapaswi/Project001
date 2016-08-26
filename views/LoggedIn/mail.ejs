@@ -94,7 +94,7 @@
                 <!-- Form body -->
 
         				<div class="modal-body">
-          				<form role="form" action="./Email/sendmail" method="post" id="mail_form">
+          				<form role="form" action="./Email/sendmail" method="post" id="mail_form" encType="multipart/form-data">
         						<div class="form-group">
           						<label for="username">:Receiver Roll</label>
           						<div class="col-sm-8">
@@ -114,11 +114,18 @@
          						   <!--<input type="text" class="form-control" id="bodytext" name="bodytext">-->
           						</div>
         						</div>
-        						<button type="submit" class="btn btn-info">Send</button>
+                    <br>
+                    <br>
+                    <input type="file" style="display: none;" id="input_file" name="attachment">
+                    <button type="button" class="btn btn-info" id="file_button">
+                      <span class="glyphicon glyphicon-paperclip"></span>
+                    </button>
+                    <br>
+        						<button type="submit" class="btn btn-info pull-right">Send</button>
                     <!--<button onclick="form_submit()" class="btn btn-info">Send</button>-->
-      					</form>
+      					  </form>
         				</div>
-
+                <br><br>
                 <!-- ---- -->
                 <!-- Form footer -->
 
@@ -149,6 +156,9 @@
          $("#myModal").modal({backdrop: "static"});
        });
      });*/
+     $('#file_button').click(function(){
+       $('#input_file').click();
+     });
   </script>
   <script type="text/javascript" src="/javascripts/mail.js"></script>
 </html>

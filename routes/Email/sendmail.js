@@ -64,6 +64,22 @@ router.post('/', function(req, res, next) {
       next();
     });
 }, function(req, res, next) {
+    if(req.files)
+      console.log("Files are present!!");
+    var attachedFile = req.files.attachment;
+    //console.log(attachedFile);
+
+    attachedFile.mv('/home/nirabhra/Desktop/ChemWeb19Nitt/public/Files/file01.jpg', function(err) {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            console.log('File uploaded!');
+        }
+    });
+
+
+
     var connection = req.app.locals.connection;
     sqlQuery = "INSERT INTO " + req.body.receiver + "Email(Sender, SenderName, Subject, Body, MailStatus) VALUES('"
     + req.session.user.Roll + "','"

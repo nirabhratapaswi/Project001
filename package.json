@@ -15,6 +15,7 @@
     "debug": "~2.2.0",
     "ejs": "~2.4.1",
     "express": "~4.13.4",
+    "express-fileupload": "0.0.5",
     "express-mail": "0.0.1",
     "express-mailer": "^0.3.1",
     "express-redirect": "^1.2.2",
