@@ -14,6 +14,7 @@ var user = [];
 //var sess;
 
 router.post('/', function(req, res, next) {
+  //console.log(req.body);
   res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
   res.header('pragma', 'no-cache');
   req.checkBody('roll', 'Enter 9 digit Chemical Dept specific roll number!').matches(/(1021150[0-6]\d|102115070)/g);

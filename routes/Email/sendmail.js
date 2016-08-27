@@ -22,12 +22,17 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', function(req, res, next) {
+  res.writeHead(200, { "Content-Type" : "application/json" });
+  console.log(req.body.receive);
   var connection = req.app.locals.connection;
   req.checkBody('receiver', 'Enter 9 digit Chemical Dept specific roll number!').matches(/(1021150[0-6]\d|102115070)/g);
   res.locals.err = req.validationErrors(true);
   if(res.locals.err) {
     console.log("Error detected while sending mail : " + res.locals.err.receiver.msg);
-    res.render("LoggedIn/createMail", { notice: "Wrong Roll Number!!" } );
+    var response = { "data" : "Wrong Roll Number!!" };
+    res.write(JSON.stringify(response));
+    res.end();
+    //res.render("LoggedIn/createMail", { notice: "Wrong Roll Number!!" } );
   }
   else {
     req.sanitize('receiver').escape().trim();
@@ -35,7 +40,7 @@ router.post('/', function(req, res, next) {
     req.body.bodytext = b64EncodeUnicode(req.body.bodytext);
     //req.sanitize('subject').escape().trim();
     //req.sanitize('bodytext').escape().trim();
-    console.log("Subject encoded='" + req.body.subject + "' AND Body encoded='" + req.body.bodytext + "'.");
+    //console.log("Subject encoded='" + req.body.subject + "' AND Body encoded='" + req.body.bodytext + "'.");
     var checkSqlQuery = "SELECT Roll FROM USERS";
     connection.query(checkSqlQuery, function(error, row, field) {
       if (error)
@@ -46,11 +51,18 @@ router.post('/', function(req, res, next) {
           break;
         }
         else if(req.body.receiver == req.session.user.Roll) {
-          res.render("LoggedIn/createMail", { notice: "Cant send yourself a mail!!" } );
+          //res.render("LoggedIn/createMail", { notice: "Cant send yourself a mail!!" } );
+          var response = { "data" : "Cant send yourself a mail!!" };
+          res.write(JSON.stringify(response));
+          res.end();
           break;
         }
-        else if((req.body.receiver != row[i].Roll &&  i == row.length - 1))
-          res.render("LoggedIn/createMail", { notice: "Incorrect Reviever Roll Number!" } );
+        else if((req.body.receiver != row[i].Roll &&  i == row.length - 1)) {
+          //res.render("LoggedIn/createMail", { notice: "Incorrect Reviever Roll Number!" } );
+          var response = { "data" : "Incorrect Reviever Roll Number!" };
+          res.write(JSON.stringify(response));
+          res.end();
+        }
       }
     });
   }
@@ -64,7 +76,7 @@ router.post('/', function(req, res, next) {
       next();
     });
 }, function(req, res, next) {
-    if(req.files)
+    /*if(req.files)
       console.log("Files are present!!");
     var attachedFile = req.files.attachment;
     //console.log(attachedFile);
@@ -76,10 +88,9 @@ router.post('/', function(req, res, next) {
         else {
             console.log('File uploaded!');
         }
-    });
+    });*/
 
-
-
+    //console.log(req.body.attachment + "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||");
     var connection = req.app.locals.connection;
     sqlQuery = "INSERT INTO " + req.body.receiver + "Email(Sender, SenderName, Subject, Body, MailStatus) VALUES('"
     + req.session.user.Roll + "','"
@@ -99,7 +110,9 @@ router.post('/', function(req, res, next) {
       if(err)
         throw err;
       console.log("Local Email sent successfully!!");
-      res.redirect('/auth');
+      var response = { "data" : "Mail Sent!!" };
+      res.write(JSON.stringify(response));
+      res.end();
     });
 });
 

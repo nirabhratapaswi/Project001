@@ -12,7 +12,7 @@
         color: red;
       }
       #p011 {
-        display: none;
+        /*display: none;*/
       }
       .hide {
         visibility: none;
@@ -23,7 +23,7 @@
     <p id="p011"></p>
     <div id="notice">
       <% if(notice) %>
-        <p><%= notice; %></p>
+        <p><%= notice; %><span>|-------------------|</span><span>Welcome <% if(username) %><%= username; %></span></p>
     </div>
     <nav class="navbar navbar-inverse">
       <div class="container-fluid">
@@ -71,7 +71,6 @@
         <% } %>
     </tbody>
     </table>
-    <p>Logged in as: <% if(username) %><%= username; %></p>
     <!--<button class="btn btn-info"><a href="/Email/createmail">Create Mail</button>-->
 
 
@@ -88,13 +87,14 @@
         				<div class="modal-header">
           				<button type="button" class="close" data-dismiss="modal">&times;</button>
           				<h4 class="modal-title">Mail It!!</h4>
+                  <p id="error_para"></p>
         				</div>
 
                 <!-- ---- -->
                 <!-- Form body -->
 
         				<div class="modal-body">
-          				<form role="form" action="./Email/sendmail" method="post" id="mail_form" encType="multipart/form-data">
+          				<form role="form" id="mail_form" encType="multipart/form-data">
         						<div class="form-group">
           						<label for="username">:Receiver Roll</label>
           						<div class="col-sm-8">
@@ -116,12 +116,19 @@
         						</div>
                     <br>
                     <br>
-                    <input type="file" style="display: none;" id="input_file" name="attachment">
+                    <div class="form-group">
+          						<label for="attachment" style="display: none;">:Subject</label>
+          						<div class="col-sm-8">
+            						<input type="file" class="form-control" style="display: none;" id="input_file" name="attachment">
+          						</div>
+        						</div>
+                    <!--<input type="file" style="display: none;" id="input_file" name="attachment">-->
                     <button type="button" class="btn btn-info" id="file_button">
                       <span class="glyphicon glyphicon-paperclip"></span>
                     </button>
                     <br>
-        						<button type="submit" class="btn btn-info pull-right">Send</button>
+        						<!--<button type="submit" class="btn btn-info pull-right">Send</button>-->
+                    <button onclick="sendAjax()" class="btn btn-info pull-right">Send</button>
                     <!--<button onclick="form_submit()" class="btn btn-info">Send</button>-->
       					  </form>
         				</div>
@@ -130,7 +137,7 @@
                 <!-- Form footer -->
 
         				<div class="modal-footer">
-          				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          				<button type="button" class="btn btn-default" data-dismiss="modal" id="close_button">Close</button>
         				</div>
 
                 <!-- ---- -->
@@ -144,13 +151,15 @@
 
 
 
-
-
+        <!--<button class="btn btn-info btn-sm" onclick="changeText()">Click To Change Text</button>-->
   </body>
   <script type="text/javascript">
-    function form_submit() {
+  $("#mail_form").submit(function(e) {
+      e.preventDefault();
+  });
+    /*function form_submit() {
       document.getElementById("mail_form").submit();
-     }
+    }*/
      /*$(document).ready(function(){
        $("#compose_mail_btn").click(function(){
          $("#myModal").modal({backdrop: "static"});
