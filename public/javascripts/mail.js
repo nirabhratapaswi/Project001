@@ -51,10 +51,7 @@ function sendAjax() {
   });
 
   xmlhttp.open('POST', '//localhost:3000/Email/sendmail', true);
-  xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-  var ft = document.getElementById('input_file').files[0];
-  document.getElementById("p011").innerHTML = ft;
-  xmlhttp.send(JSON.stringify(values));
+  xmlhttp.send(formData);
 }
 
 function changeText() {

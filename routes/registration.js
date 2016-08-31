@@ -6,6 +6,7 @@ var redirect = require('express-redirect');
 var bcrypt = require('bcrypt');
 var mysql = require('mysql');
 var nodemailer = require('nodemailer');
+var fs = require('fs');
 
 var transporter = nodemailer.createTransport({
         service: 'Gmail',
@@ -42,10 +43,12 @@ router.post('/', function(req, res, next) {
       + req.body.Place +"','"
       + req.body.Auth +"','"
       + stpass +"');";
-      var sqlCreateTable = "CREATE TABLE " + req.body.Roll + "Email(id int NOT NULL AUTO_INCREMENT, Sender char(9) NOT NULL, SenderName varchar(100) NOT NULL, Subject text, Body longtext, Time timestamp, Attachment varchar(200), MailStatus char(1), PRIMARY KEY(id));";
+      var roll = req.body.Roll;
+      var sqlCreateTable = "CREATE TABLE " + req.body.Roll + "Email(id int NOT NULL AUTO_INCREMENT, Sender char(9) NOT NULL, SenderName varchar(100) NOT NULL, Subject text, Body longtext, Time timestamp, Attachment longblob, MailStatus char(1), PRIMARY KEY(id));";
       connection.query(sqlCreateTable, function(err, rows, fields) {
         if(err)
           throw err;
+        fs.mkdirSync('./public/Files/' + roll,0744);
         console.log("Table created!");
       });
       connection.query(sqlQuery, function(err, rows, fields) {

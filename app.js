@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var session = require('client-sessions');
 var validator = require('express-validator');
 var fileUpload = require('express-fileupload');
+var multer = require('multer');
 
 var routes = require('./routes/index');
 var login = require('./routes/login');
@@ -21,6 +22,7 @@ var trial = require('./routes/ajax/trial');
 var responseAjax = require('./routes/ajax/responseAjax');
 var deleteMail = require('./routes/ajax/deleteMail');
 var sentmail = require('./routes/Email/sentmail');
+var multerRoute = require('./routes/multer');
 //var users = require('./routes/users');
 
 var app = express();
@@ -33,6 +35,7 @@ app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(multer({dest: __dirname + '/public/Files'}).any());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -48,7 +51,7 @@ app.use(session({
   ephemeral: true
 }));
 app.use(validator());
-app.use(fileUpload());
+//app.use(fileUpload());
 
 app.use('/', routes);
 app.use('/login', login);
@@ -62,6 +65,7 @@ app.use('/ajax/trial', trial);
 app.use('/ajax/responseAjax', responseAjax);
 app.use('/ajax/deleteMail', deleteMail);
 app.use('/Email/sentmail', sentmail);
+app.use('/multer', multerRoute);
 
 //app.use('/users', users);
 

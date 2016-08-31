@@ -7,6 +7,9 @@ var bcrypt = require('bcrypt');
 var mysql = require('mysql');
 var nodemailer = require('nodemailer');
 var btoa = require('btoa');
+var fs = require('fs');
+var multer = require('multer');
+var path = require('path');
 
 var sqlQuery = '';
 var receiverName = '';
@@ -21,9 +24,11 @@ router.get('/', function(req, res, next) {
   res.render('register', { notice: "Register" } );
 });
 
-router.post('/', function(req, res, next) {
+router.post('/',  function(req, res, next) {
   res.writeHead(200, { "Content-Type" : "application/json" });
-  console.log(req.body.receive);
+  //console.log(req.body);
+  console.log(req.files);
+  console.log(req.files[0].originalname);
   var connection = req.app.locals.connection;
   req.checkBody('receiver', 'Enter 9 digit Chemical Dept specific roll number!').matches(/(1021150[0-6]\d|102115070)/g);
   res.locals.err = req.validationErrors(true);
@@ -76,9 +81,31 @@ router.post('/', function(req, res, next) {
       next();
     });
 }, function(req, res, next) {
-    /*if(req.files)
+    if(req.files) {
       console.log("Files are present!!");
-    var attachedFile = req.files.attachment;
+      var filename = req.files[0].originalname;
+      var readFile = fs.createReadStream('./public/Files/' + req.files[0].filename);
+      readFile.pipe(fs.createWriteStream('./public/Files/' + req.session.user.Roll + '/' + filename));
+      //readFile.pipe(fs.createWriteStream('./public/Files/' + req.body.receiver + '/' + filename));
+      //stream.on('error', function(err) {});
+      readFile.on('close', function() {
+        fs.unlink('./public/Files/' + req.files[0].filename);
+      });
+      console.log(req.files);
+      /*
+      var storage = multer.diskStorage({
+          destination: function (req, file, cb) {
+              cb(null, __dirname + '/public/Files');
+          },
+          filename: function (req, file, cb) {
+              cb(null, file.fieldname + '-' + Date.now());
+        }
+      });
+
+      var upload = multer({ storage: storage }).single('file');
+      */
+    }
+    /*var attachedFile = req.files.attachment;
     //console.log(attachedFile);
 
     attachedFile.mv('/home/nirabhra/Desktop/ChemWeb19Nitt/public/Files/file01.jpg', function(err) {
@@ -90,7 +117,6 @@ router.post('/', function(req, res, next) {
         }
     });*/
 
-    //console.log(req.body.attachment + "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||");
     var connection = req.app.locals.connection;
     sqlQuery = "INSERT INTO " + req.body.receiver + "Email(Sender, SenderName, Subject, Body, MailStatus) VALUES('"
     + req.session.user.Roll + "','"
@@ -114,6 +140,23 @@ router.post('/', function(req, res, next) {
       res.write(JSON.stringify(response));
       res.end();
     });
+});
+
+
+
+
+
+router.post('/jjsabdkjbas',  function(req, res, next) {
+  //res.writeHead(200, { "Content-Type" : "application/json" });
+  console.log(req.files);
+  console.log(req.body);
+  var fstream;
+  /*req.pipe(req.busboy);
+  req.busboy.on('file', function (fieldname, file, filename) {
+    console.log("Uploading: " + filename);
+
+  });
+  */
 });
 
 function b64EncodeUnicode(str) {
