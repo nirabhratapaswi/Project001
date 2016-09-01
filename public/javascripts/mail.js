@@ -7,11 +7,13 @@ xmlhttp.onreadystatechange = function() {
   if(xmlhttp.readyState == 1) {
       document.getElementById("unified").innerHTML = "Upload in progress!!";
       document.getElementById("error_para").innerHTML = "Upload in progress!!";
+      var rawResp = xmlhttp.response;
+      document.getElementById("unified").innerHTML = rawResp;
     }
   if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
     var response = JSON.parse(xmlhttp.responseText);
     var rawResp = xmlhttp.responseText;
-    document.getElementById("unified").innerHTML = rawResp;
+    document.getElementById("unified").innerHTML = "Reading done";
     if(response["data"] == "Mail Sent!!") {
       $('#close_button').click();
       //document.getElementById("unified").innerHTML = "Mail Sent!!";
@@ -25,6 +27,30 @@ xmlhttp.onreadystatechange = function() {
     //window.reload();
   }
 };
+
+
+function downloadPost(key) {
+  document.getElementById('unified').innerHTML = "Download button clicked!!" + key;
+    var method = "post"; // Set method to post by default if not specified.
+
+    // The rest of this code assumes you are not using a library.
+    // It can be made less wordy if you use one.
+    var form = document.createElement("form");
+    form.setAttribute("method", method);
+    form.setAttribute("action", "./ajax/downloadFile");
+
+            var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("id", "hiddenFieldForm");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", "key");
+            hiddenField.setAttribute("value", key);
+
+            form.appendChild(hiddenField);
+
+    document.body.appendChild(form);
+    form.submit();
+}
+
 
 
 window.onload = function() {
@@ -74,8 +100,9 @@ function changeText() {
 }
 
 function download11(pass) {
-  var data = { id: pass };
+  downloadPost(pass);
+  /*var data = { id: pass };
   xmlhttp.open('POST', '//localhost:3000/ajax/downloadAttachment', true);
   xmlhttp.setRequestHeader("Content-type", "application/json;charset=UTF-8");
-  xmlhttp.send(JSON.stringify(data));
+  xmlhttp.send(JSON.stringify(data));*/
 }
