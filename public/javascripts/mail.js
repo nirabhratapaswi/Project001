@@ -2,12 +2,22 @@ var mailNodes;
 var text = '';
 var xmlhttp = new XMLHttpRequest();
 var resp = '';
+var finish = false;
 xmlhttp.onreadystatechange = function() {
+  if(xmlhttp.readyState == 1) {
+      document.getElementById("unified").innerHTML = "Upload in progress!!";
+      document.getElementById("error_para").innerHTML = "Upload in progress!!";
+    }
   if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
     var response = JSON.parse(xmlhttp.responseText);
-    //document.getElementById("p011").innerHTML = response["data"];
+    var rawResp = xmlhttp.responseText;
+    document.getElementById("unified").innerHTML = rawResp;
     if(response["data"] == "Mail Sent!!") {
       $('#close_button').click();
+      //document.getElementById("unified").innerHTML = "Mail Sent!!";
+    }
+    else if(response["data"] == "download") {
+      document.getElementById("unified").innerHTML = response["filename"].toString();
     }
     else {
       document.getElementById("error_para").innerHTML = "Error detected : " + response["data"];
@@ -28,8 +38,10 @@ function count() {
     text += mailNodes[11].innerHTML;
     mailNodes[11].id = mailNodes[9].innerHTML;
     mailNodes[11].innerHTML = "<td><a href='#' onclick='run(" + mailNodes[9].innerHTML + ")'>Delete</a></td>";
+    mailNodes[13].id = mailNodes[9].innerHTML.toString() + "i";
+    mailNodes[13].innerHTML = "<td><a href='#' onclick='download11(" + mailNodes[9].innerHTML + ")'>Download</a></td>";
   }
-  document.getElementById("p011").innerHTML = text;
+  //document.getElementById("p011").innerHTML = text;
 }
 
 function run(pass) {
@@ -59,4 +71,11 @@ function changeText() {
   xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
   var datasend = { "data" : "This is some data" };
   xmlhttp.send(JSON.stringify(datasend));
+}
+
+function download11(pass) {
+  var data = { id: pass };
+  xmlhttp.open('POST', '//localhost:3000/ajax/downloadAttachment', true);
+  xmlhttp.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+  xmlhttp.send(JSON.stringify(data));
 }

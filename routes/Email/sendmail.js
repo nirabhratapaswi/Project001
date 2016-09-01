@@ -86,7 +86,7 @@ router.post('/',  function(req, res, next) {
       var filename = req.files[0].originalname;
       var readFile = fs.createReadStream('./public/Files/' + req.files[0].filename);
       readFile.pipe(fs.createWriteStream('./public/Files/' + req.session.user.Roll + '/' + filename));
-      //readFile.pipe(fs.createWriteStream('./public/Files/' + req.body.receiver + '/' + filename));
+      readFile.pipe(fs.createWriteStream('./public/Files/' + req.body.receiver + '/' + filename));
       //stream.on('error', function(err) {});
       readFile.on('close', function() {
         fs.unlink('./public/Files/' + req.files[0].filename);
@@ -118,14 +118,16 @@ router.post('/',  function(req, res, next) {
     });*/
 
     var connection = req.app.locals.connection;
-    sqlQuery = "INSERT INTO " + req.body.receiver + "Email(Sender, SenderName, Subject, Body, MailStatus) VALUES('"
+    sqlQuery = "INSERT INTO " + req.body.receiver + "Email(Sender, SenderName, Attachment, Subject, Body, MailStatus) VALUES('"
     + req.session.user.Roll + "','"
     + req.session.user.Name + "','"
+    + req.files[0].originalname + "','"
     + req.body.subject + "','"
     + req.body.bodytext + "', 'R');";
-    var sqlQueryS = "INSERT INTO " + req.session.user.Roll + "Email(Sender, SenderName, Subject, Body, MailStatus) VALUES('"
+    var sqlQueryS = "INSERT INTO " + req.session.user.Roll + "Email(Sender, SenderName, Attachment, Subject, Body, MailStatus) VALUES('"
     + req.body.receiver + "','"
     + receiverName + "','"
+    + req.files[0].originalname + "','"
     + req.body.subject + "','"
     + req.body.bodytext + "', 'S');";
     connection.query(sqlQueryS, function(err, rows, fields) {

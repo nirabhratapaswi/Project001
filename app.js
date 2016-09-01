@@ -23,6 +23,7 @@ var responseAjax = require('./routes/ajax/responseAjax');
 var deleteMail = require('./routes/ajax/deleteMail');
 var sentmail = require('./routes/Email/sentmail');
 var multerRoute = require('./routes/multer');
+var downloadAttachment = require('./routes/ajax/downloadAttachment');
 //var users = require('./routes/users');
 
 var app = express();
@@ -66,6 +67,7 @@ app.use('/ajax/responseAjax', responseAjax);
 app.use('/ajax/deleteMail', deleteMail);
 app.use('/Email/sentmail', sentmail);
 app.use('/multer', multerRoute);
+app.use('/ajax/downloadAttachment', downloadAttachment);
 
 //app.use('/users', users);
 
