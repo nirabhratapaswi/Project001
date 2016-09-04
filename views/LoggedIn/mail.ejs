@@ -121,13 +121,25 @@
           						<label for="attachment" style="display: none;">:Subject</label>
           						<div class="col-sm-8">
                         <!--    style="display: none;"   -->
-            						<input type="file" class="form-control" style="display: none;" id="input_file" name="attachment">
+            						<!--<input type="file" class="form-control" style="display: none;" id="input_file" name="attachment" multiple>-->
+                        <input type="file" class="form-control" style="display: none;" id="input_file" name="attachment">
           						</div>
         						</div>
                     <!--<input type="file" style="display: none;" id="input_file" name="attachment">-->
-                    <button type="button" class="btn btn-info" id="file_button">
-                      <span class="glyphicon glyphicon-paperclip"></span>
-                    </button>
+                    <div id="fileButtonDisplay">
+                      <p id="filenameDisplay">
+                        <button type="button" class="btn btn-info" id="file_button">
+                          <span class="glyphicon glyphicon-paperclip"></span>
+                        </button>
+                        <span>Para has something..</span>
+                        <!--<progress id="progressBar" style="visibility: hidden" value="0" max="100"></progress>-->
+                        <div class="progress" id="progress-div" style="visibility: hidden; width: 300px; float: left">
+                          <div class="progress-bar progress-bar-striped active" id="progressBar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 10%">
+                            <span id="percentageCalc"></span>
+                          </div>
+                        </div>
+                      </p>
+                    </div>
                     <br>
         						<!--<button type="submit" class="btn btn-info pull-right">Send</button>-->
                     <button onclick="sendAjax()" class="btn btn-info pull-right">Send</button>
@@ -155,21 +167,16 @@
         <p id="unified"></p>
         <!--<button class="btn btn-info btn-sm" onclick="changeText()">Click To Change Text</button>-->
   </body>
+
   <script type="text/javascript">
-  $("#mail_form").submit(function(e) {
-      e.preventDefault();
-  });
-    /*function form_submit() {
-      document.getElementById("mail_form").submit();
-    }*/
-     /*$(document).ready(function(){
-       $("#compose_mail_btn").click(function(){
-         $("#myModal").modal({backdrop: "static"});
-       });
-     });*/
+      $("#mail_form").submit(function(e) {
+          e.preventDefault();
+        });
      $('#file_button').click(function(){
        $('#input_file').click();
      });
   </script>
+
   <script type="text/javascript" src="/javascripts/mail.js"></script>
+
 </html>

@@ -3,6 +3,12 @@ var text = '';
 var xmlhttp = new XMLHttpRequest();
 var resp = '';
 var finish = false;
+
+document.getElementById("input_file").addEventListener("change", function() {
+  var filename = document.getElementById("input_file").value.split('\\');
+  document.getElementById("fileButtonDisplay").childNodes[1].childNodes[3].innerHTML = filename[filename.length-1];
+});
+
 xmlhttp.onreadystatechange = function() {
   if(xmlhttp.readyState == 1) {
       document.getElementById("unified").innerHTML = "Upload in progress!!";
@@ -87,7 +93,13 @@ function sendAjax() {
     values[field.name] = field.value;
     console.log(field.name);
   });
-
+  xmlhttp.upload.addEventListener("loadstart", function() {
+    document.getElementById("progress-div").style.visibility = "visible";
+  }, false);
+  xmlhttp.upload.addEventListener("progress", progressFunction, false);
+  xmlhttp.upload.addEventListener("load", function() {
+    document.getElementById("progress-div").style.visibility = "hidden";
+  }, false);
   xmlhttp.open('POST', '//localhost:3000/Email/sendmail', true);
   xmlhttp.send(formData);
 }
@@ -101,8 +113,15 @@ function changeText() {
 
 function download11(pass) {
   downloadPost(pass);
-  /*var data = { id: pass };
-  xmlhttp.open('POST', '//localhost:3000/ajax/downloadAttachment', true);
-  xmlhttp.setRequestHeader("Content-type", "application/json;charset=UTF-8");
-  xmlhttp.send(JSON.stringify(data));*/
 }
+
+function progressFunction(evt){
+         var progressBar = document.getElementById("progressBar");
+         var percentageDiv = document.getElementById("percentageCalc");
+         if (evt.lengthComputable) {
+           var max = "aria-valuemax";
+           progressBar.max = evt.total;
+           progressBar.style.width = ((evt.loaded/evt.total) * 100) + "%";
+           percentageDiv.innerHTML = Math.round(evt.loaded / evt.total * 100) + "%";
+         }
+ }
